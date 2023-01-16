@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test web apps</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script> <!--Подключаем скрипт от телеграм-->
+</head>
+<body>
+    <div class="main">
+        <button class="clear">Введите оценки</button>
+        <input type="number" class="input" name="input" placeholder="54..">
+        <button class="send">отправить</button>
+        <div class="container">
+            <div class="aver t">Ср. балл: 0</div>
+            <div class="upFive t">До пятёрки: 0 "5"</div>
+            <div class="upFour t">До четвёрки: 0 "5" или 0 "4"</div>
+        </div>
+    </div>
+
+
+    <script>
+        let tg = window.Telegram.WebApp; //получаем объект webapp телеграма 
+        tg.expand(); //расширяем на все окно  
+
+        
+
+        document.querySelector('.send').onclick = send;
+        document.querySelector('.clear').onclick = clear;
+        function clear() {
+            document.querySelector('.input').value = "";
+        }
+        document.addEventListener('keydown', function(event) {
+            if (event.code == 'Enter') {
+                send()
+            }
+        });
+        function send() {
+            let list = document.querySelector('.input').value;
+            let list_cut = []
+            var summ = 0
+            var answer = 0
+            var temp = 0 
+            for (var n in list) {
+                list_cut.push(Number(list[n]))
+            }
+            summ = list_cut.reduce((partialSum, a) => partialSum + a, 0);
+            answer = summ / list_cut.length
+            answer = answer.toFixed(2)
+            temp = list_cut.length
+            var summ1 = summ
+            while (Math.round(summ1 / temp) <=4.5 ) {
+                summ1 += 5
+                temp += 1
+                var upFiveRatingFive = temp - list_cut.length
+            }
+            temp = list_cut.length
+            var summ2 = summ
+            while (Math.round(summ2 / temp) <=3.5 ) {
+                summ2 += 5
+                temp += 1
+                var upFourRatingFive = temp - list_cut.length
+            }
+            temp = list_cut.length
+            var summ3 = summ
+            while (Math.round(summ3 / temp) <=3.5 ) {
+                summ3 += 4
+                temp += 1
+                var upFourRatingFour = temp - list_cut.length
+            }
+            if (isNaN(answer)) {
+                answer = 0
+            }
+            if (upFiveRatingFive == undefined) {
+                upFiveRatingFive = 0
+            }
+            if (upFourRatingFive == undefined) {
+                upFourRatingFive = 0
+            }
+            if (upFourRatingFour == undefined) {
+                upFourRatingFour = 0
+            }
+            document.querySelector('.upFive').innerHTML = 'До пятёрки: ' + upFiveRatingFive + ' \"5\"'
+            document.querySelector('.aver').innerHTML = 'Ср. балл: ' + answer
+            document.querySelector('.upFour').innerHTML = 'До четвёрки: ' + upFourRatingFive + ' \"5\" или ' + upFourRatingFour +' \"4\"'
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; 
+        }
+        input[type='number'],
+        input[type="number"]:hover,
+        input[type="number"]:focus {
+            appearance: none;
+            -moz-appearance: textfield;
+        }
+        input {outline:none;}
+        body {
+            margin: 0px;
+            background-color: #121212;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+        }
+        .main {
+            width: 250px;
+            height: 100vh;
+            /* display: block; */
+            /* align-items: center; */
+            color: #FFFFFF;
+        }
+        .input {
+            width: 230px;
+            height: 50px;
+            border-width: 0px;
+            padding: 0px 0px;
+            background: #FFFFFF;
+            /* border: 5px solid #666666; */
+            /* box-shadow: 0px 0px 50px 15px #000000; */
+            border-radius: 100px;
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: 650;
+            padding-left: 10px;
+            padding-right: 10px;
+            transition: 0.2s;
+        }
+        .input:hover {
+            box-shadow: 0px 0px 50px 15px #404040;
+        }
+        .send:hover {
+            text-shadow: 0px 5px 5px rgba(255, 255, 255, 1);
+        }
+        .send:active {
+            text-shadow: 0px 0px 5px #FFFFFF;
+        }
+        .text {
+            margin-top: 300px;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 30px;
+            display: flex;
+            justify-content: center;
+            transition: 0.15s;
+        }
+        .text:hover {
+            text-shadow: 0px 0px 5px #FFFFFF;
+            /* border: 0.5px solid #FFFFFF; */
+        }
+        .send {
+            display: flex;
+            justify-content: center;
+            background-color: #121212;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 30px;
+            color: #FFFFFF;
+            border-width: 0px;
+            margin-top: 10px;
+            padding: 0px 0px;
+            width: 250px;
+            transition: 0.1s;
+        }
+        .clear {
+            margin-top: 300px;
+            display: flex;
+            justify-content: center;
+            background-color: #121212;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 30px;
+            color: #FFFFFF;
+            border-width: 0px;
+            /* margin-top: 10px; */
+            padding: 0px 0px;
+            width: 250px;
+            transition: 0.1s;
+            margin-top: calc(50vh - 30px - 100px - 22px);
+        }
+        .clear:hover {
+            text-shadow: 0px 0px 5px #FFFFFF;
+            /* border: 0.5px solid #FFFFFF; */
+        }
+        .clear:active {
+            text-shadow: 0px 0px 10px #FFFFFF;
+            /* border: 0.5px solid #FFFFFF; */
+        }
+        .container {
+            margin-top: 10px;
+            width: 244px;
+            height: 94px;
+            border: 3px solid #FFFFFF;
+            display: flex;
+            /* flex-wrap: wrap; */
+            flex-direction: column;
+            justify-content: center;
+            transition: 0.15s;
+        }
+        .container:hover {
+            border: 3px solid rgb(255, 255, 255, 0);
+        }
+        .t {
+            padding-left: 10px;
+            font-style: normal;
+            font-weight: 550;
+            font-size: 15px;
+            line-height: 22px;
+        }
+    </style>
+</body>
+</html>
+
+
+
+
+
+
+
